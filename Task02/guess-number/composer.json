@@ -1,0 +1,25 @@
+{
+    "name": "werrys3021/guess-number",
+    "description": "Guess Number game",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "wp-cli/php-cli-tools": "^0.12.6"
+    },
+    "autoload": {
+        "files": [
+            "src/Controller.php",
+            "src/View.php"
+        ]
+    },
+    "bin": [
+        "bin/guess-number"
+    ],
+    "authors": [
+        {
+            "name": "Yury Urenkov",
+            "email": "your.email@example.com"
+        }
+    ]
+}
