@@ -1,0 +1,21 @@
+{
+    "name": "werrys3021/guess-number",
+    "description": "Console game 'Guess the Number'",
+    "type": "project",
+    "require": {
+        "php": ">=8.0",
+        "wp-cli/php-cli-tools": "^0.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Werrys3021\\GuessNumber\\": "src/"
+        }
+    },
+    "bin": ["bin/guess-number"],
+    "authors": [
+        {
+            "name": "none",
+            "email": "email@example.com"
+        }
+    ]
+}
