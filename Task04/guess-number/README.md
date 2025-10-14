@@ -30,13 +30,21 @@
 
 ## Установка и запуск
 
-### 1. Клонировать репозиторий:
+### Установка из Packagist
 
-```bash
-git clone https://github.com/werrys3021/guess-number.git
-cd guess-number
+bash
+composer global require werrys3021/guess-number
+
+После установки игра доступна командой:
+
+```
+guess-number --help
 ```
 
+
+### Пакет на Packagist
+
+[https://packagist.org/packages/werrys3021/guess-number](https://packagist.org/packages/werrys3021/guess-number)
 
 ## Работа с базой данных
 
@@ -69,4 +77,16 @@ cd guess-number
 
 # Игра с указанием имени игрока
 ./bin/guess-number --new --player "ИмяИгрока"
+```
+
+
+## Локальная разработка
+
+**bash**
+
+```
+git clone https://github.com/werrys3021/guess-number.git
+cd guess-number
+composer install
+php bin/guess-number.php --help
 ```
