@@ -1,0 +1,17 @@
+{
+    "name": "werrys3021/guess-number",
+    "description": "A console number guessing game",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Werrys3021\\GuessNumber\\": "src/"
+        }
+    },
+    "bin": ["bin/guess-number.php", "bin/guess-number.bat"],
+    "require": {
+        "wp-cli/php-cli-tools": "^0.12"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7"
+    }
+}
