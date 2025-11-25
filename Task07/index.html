@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Угадай число - IndexedDB</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Угадай число</h1>
+            <p>Компьютер загадал число от 1 до 100. Угадайте его за 10 попыток!</p>
+        </header>
+
+        <main>
+            <!-- Экран новой игры -->
+            <div id="newGameScreen" class="screen active">
+                <div class="player-setup">
+                    <label for="playerName">Ваше имя:</label>
+                    <input type="text" id="playerName" placeholder="Гость" maxlength="20">
+                    <button id="startGameBtn" class="btn btn-primary">Начать игру</button>
+                </div>
+            </div>
+
+            <!-- Экран игры -->
+            <div id="gameScreen" class="screen">
+                <div class="game-info">
+                    <div class="player-info">Игрок: <span id="currentPlayer">Гость</span></div>
+                    <div class="attempts-info">Попытка: <span id="currentAttempt">1</span>/10</div>
+                </div>
+
+                <div class="game-controls">
+                    <input type="number" id="guessInput" min="1" max="100" placeholder="Введите число">
+                    <button id="guessBtn" class="btn btn-primary">Проверить</button>
+                    <button id="hintBtn" class="btn btn-secondary">Подсказка (<span id="hintsCount">3</span>)</button>
+                </div>
+
+                <div class="game-messages">
+                    <div id="gameMessage" class="message"></div>
+                    <div id="attemptsHistory" class="attempts-history"></div>
+                </div>
+
+                <div class="game-actions">
+                    <button id="saveGameBtn" class="btn btn-primary">Сохранить игру</button>
+                    <button id="newGameBtn" class="btn btn-secondary">Новая игра</button>
+                    <button id="showHistoryBtn" class="btn btn-secondary">История игр</button>
+                </div>
+            </div>
+
+            <!-- Экран истории -->
+            <div id="historyScreen" class="screen">
+                <h2>История игр</h2>
+                <div class="history-filters">
+                    <button class="filter-btn active" data-filter="all">Все игры</button>
+                    <button class="filter-btn" data-filter="win">Победы</button>
+                    <button class="filter-btn" data-filter="loose">Поражения</button>
+                </div>
+                
+                <div class="history-actions">
+                    <button id="showStatsBtn" class="btn btn-primary">Статистика игроков</button>
+                    <button id="clearHistoryBtn" class="btn btn-secondary">Очистить историю</button>
+                </div>
+                
+                <div id="gamesList" class="games-list"></div>
+                <button id="backToGameBtn" class="btn btn-secondary">Назад к игре</button>
+            </div>
+
+            <!-- Экран статистики -->
+            <div id="statsScreen" class="screen">
+                <h2>Статистика игроков</h2>
+                <div id="topPlayers" class="top-players"></div>
+                <button id="backFromStatsBtn" class="btn btn-secondary">Назад</button>
+            </div>
+
+            <!-- Экран повтора игры -->
+            <div id="replayScreen" class="screen">
+                <h2>Повтор игры</h2>
+                <div id="replayInfo" class="replay-info"></div>
+                <div id="replaySteps" class="replay-steps"></div>
+                <button id="backFromReplayBtn" class="btn btn-secondary">Назад</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/model/GameModel.js"></script>
+    <script src="js/storage/GameStorage.js"></script>
+    <script src="js/view/GameView.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
