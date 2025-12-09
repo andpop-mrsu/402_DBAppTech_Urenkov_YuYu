@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Guess Number — SQLite (Task08)</title>
+    <meta
+      name="description"
+      content="Браузерная версия игры «Угадай число» на PHP с сохранением партий в SQLite."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="container">
+      <h1>Guess Number</h1>
+      <p class="subtitle">
+        Task08: браузерная версия на PHP с сохранением партий в базе данных SQLite
+      </p>
+    </header>
+
+    <main class="container grid">
+      <!-- Блок: новая игра -->
+      <section class="card" id="new-game">
+        <h2>Новая игра</h2>
+
+        <div class="row">
+          <div class="grow">
+            <label for="playerName">Имя игрока</label>
+            <input
+              id="playerName"
+              type="text"
+              placeholder="Введите имя игрока"
+            />
+          </div>
+        </div>
+
+        <div class="row two">
+          <div>
+            <label for="minValue">Минимум</label>
+            <input id="minValue" type="number" value="1" />
+          </div>
+          <div>
+            <label for="maxValue">Максимум</label>
+            <input id="maxValue" type="number" value="100" />
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="toggle">
+            <input id="limitAttempts" type="checkbox" />
+            <span>Ограничить число попыток</span>
+          </label>
+        </div>
+        <div class="row" id="attemptLimitRow" hidden>
+          <label for="attemptLimit">Лимит попыток</label>
+          <input id="attemptLimit" type="number" min="1" value="10" />
+        </div>
+
+        <div class="row">
+          <button id="startBtn" class="primary">Начать новую игру</button>
+          <button id="resetBtn" class="outline">Сбросить</button>
+        </div>
+        <p class="hint">
+          Компьютер загадывает число в диапазоне от 1 до заданного максимума.
+          После каждой попытки он сообщает, больше или меньше загаданного ваше
+          число.
+        </p>
+      </section>
+
+      <!-- Блок: ход игры -->
+      <section class="card">
+        <h2>Ход игры</h2>
+        <div class="row two">
+          <div class="grow">
+            <label for="guessInput">Ваше предположение</label>
+            <input
+              id="guessInput"
+              type="number"
+              placeholder="Введите число…"
+              disabled
+            />
+          </div>
+          <div class="vbottom">
+            <button id="guessBtn" class="primary" disabled>Проверить</button>
+          </div>
+        </div>
+        <div class="status" id="status">Нажмите «Начать новую игру»</div>
+        <ul id="logList" class="log"></ul>
+      </section>
+
+      <!-- Блок: итог текущей партии -->
+      <section class="card">
+        <h2>Итог текущей партии</h2>
+        <div class="stats" id="stats">
+          <div class="stat">
+            <span id="statAttempts">0</span><label>Попыток</label>
+          </div>
+          <div class="stat">
+            <span id="statElapsed">0 сек.</span><label>Время</label>
+          </div>
+          <div class="stat">
+            <span id="statResult">—</span><label>Результат</label>
+          </div>
+        </div>
+        <button id="playAgainBtn" class="secondary" disabled>
+          Сыграть ещё раз
+        </button>
+      </section>
+
+      <!-- Блок: операции с базой IndexedDB -->
+      <section class="card" id="db">
+        <h2>База данных (SQLite)</h2>
+
+        <!-- Режимы 2–5 -->
+        <div class="row wrap">
+          <button id="btnShowAllGames" class="outline">Все партии</button>
+          <button id="btnShowWins" class="outline">Победы</button>
+          <button id="btnShowLosses" class="outline">Поражения</button>
+          <button id="btnShowStats" class="secondary">
+            Статистика игроков
+          </button>
+          <button id="btnClearDb" class="danger outline">Очистить базу</button>
+        </div>
+
+        <!-- Режим 6: повтор партии -->
+        <div class="row two">
+          <div>
+            <label for="replayId">Воспроизвести партию по ID</label>
+            <div class="row">
+              <input
+                id="replayId"
+                type="number"
+                min="1"
+                placeholder="ID партии"
+              />
+              <button id="btnReplay" class="primary">Воспроизвести</button>
+            </div>
+          </div>
+          <div>
+            <p class="status" id="dbStatus">
+              База ещё не использовалась. После окончания партии данные будут
+              сохранены.
+            </p>
+          </div>
+        </div>
+
+        <h3>Список партий</h3>
+        <div class="tableWrap">
+          <table id="gamesTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Дата</th>
+                <th>Игрок</th>
+                <th>Диапазон</th>
+                <th>Загаданное</th>
+                <th>Результат</th>
+                <th>Попытки</th>
+                <th>Время</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <h3>Статистика по игрокам</h3>
+        <div class="tableWrap">
+          <table id="playersTable">
+            <thead>
+              <tr>
+                <th>Игрок</th>
+                <th>Победы</th>
+                <th>Поражения</th>
+                <th>Всего игр</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <h3>Воспроизведение партии</h3>
+        <ul id="replayLog" class="log"></ul>
+      </section>
+    </main>
+
+    <footer class="container footer">
+      <p>
+        Архитектура:
+        <code>src/Game.js</code> (логика) •
+        <code>src/View.js</code> (UI) •
+        <code>src/Database.js</code> (SQLite) •
+        <code>src/Controller.js</code> (режимы игры и связи).
+      </p>
+    </footer>
+
+    <script type="module" src="./src/Controller.js"></script>
+  </body>
+</html>
